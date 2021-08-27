@@ -1,6 +1,7 @@
 /* servidor express */
 const express = require('express');
 const cors = require('cors');
+const { dbConnection } = require('../database/config');
 
 class Server {
 
@@ -12,6 +13,8 @@ class Server {
         /* ruta usuarios */
         this.usersRoutesPath = '/api/users';
 
+        // Conectar a base de datos
+        this.conectarDB();
 
         // Middlewares
         // Funciones que siempre se ejecutaran al levantar el servidor
@@ -23,8 +26,12 @@ class Server {
         // Rutas de mi aplicación
         this.routes();
     }
+
+    async conectarDB () {
+        await dbConnection();
+    }
     
-    middlewares(){
+    middlewares() {
 
         // CORS
         this.app.use(cors());
@@ -41,7 +48,7 @@ class Server {
     routes(){
 
         // Rutas de usuario
-        this.app.use(this.usersRoutesPath, require('../routes/users'));
+        this.app.use(this.usersRoutesPath, require('../routes/users-route'));
     }
 
     // Habilitamos el puerto
